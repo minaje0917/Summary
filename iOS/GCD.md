@@ -25,7 +25,7 @@
         }
 
 
-        //작업의 단위 ===> "하나의 클로저" 안에 보내는 작업 자체가 묶이는 개념.
+        //작업의 단위 ===> "하나의 클로저" 안에 보내는 작업 자체가 B이는 개념.
         DispatchQueue.global().async {
             print("Task 1 시작")
             print("Task 1의 중간 작업 1")
@@ -48,14 +48,6 @@
 
         Operation은 GCD를 기반으로해서 만들어진 것이다.     
         GCD + 여려가지 기능(취소 / 순서지정 / 일시정지) = Operation     
-        프로젝트의 효율성, 사례 적합성 등을 고려해서 GCD or Operation을 선택해서 사용하자. 
-        
-
-        
-
-        
-
-
-
+        프로젝트의 효율성, 사례 적합성 등을 고려해서 GCD or Operation을 선택해서 사용하자. B
 
 참고 : https://inf.run/pQ7u

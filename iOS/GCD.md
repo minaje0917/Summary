@@ -25,7 +25,7 @@
         }
 
 
-        //작업의 단위 ===> "하나의 클로저" 안에 보내는 작업 자체가 B이는 개념.
+        //작업의 단위 ===> "하나의 클로저" 안에 보내는 작업 자체가 묶이는 개념.
         DispatchQueue.global().async {
             print("Task 1 시작")
             print("Task 1의 중간 작업 1")
@@ -48,6 +48,74 @@
 
         Operation은 GCD를 기반으로해서 만들어진 것이다.     
         GCD + 여려가지 기능(취소 / 순서지정 / 일시정지) = Operation     
-        프로젝트의 효율성, 사례 적합성 등을 고려해서 GCD or Operation을 선택해서 사용하자. B
+        프로젝트의 효율성, 사례 적합성 등을 고려해서 GCD or Operation을 선택해서 사용하자. 
+    3. GCD의 종류와 특성   
+        GCD는 3가지 나뉜다.     
+        (글로벌)메인, 글로벌, 프라이빗(커스텀)디스패치 큐로 나뉜다.    
+        대기열마다 특성이 조금씩 다르다. 작업의 특성, 원하는 일처리에 따라 대기열(큐)의 특성에 맞게 작업을 보내면된다.     
+        1. (글로벌)메인 큐     
+            * 유일하게 한 개이다.
+            * 직렬(serial)로 동작한다.
+            * 메인 쓰레드를 의미한다.
+                ```swift 
+                DispatchQueue.main.async {
+                   //작업을 메인쓰레드(1번 쓰레드)로 보낸다.(비동기적으로)  
+                }
+
+                //참고용 코드
+                DispatchQueue.main.asyncAfter(.now() + 2) {
+                    //지금으로부터 2초뒤에 메인쓰레드로 작업을 보낼거야.
+                }
+                ```
+        2. 글로벌 큐 
+            * 종류가 여섯개가 있다. (QOS)
+            * 기본 설정이 Concurrent(동시)이다.
+
+            1. 예시코드
+                ```swift
+                DispatchQueue.global().async{
+
+                }
+                ```
+            2. QOS
+                ``` swift
+                //중요도 순서(위로 올라올수록 중요!)
+                 
+                DispatchQueue.global(qos: .userInteractive) 거의 즉시
+                유저와 직접적 인터렉티브: UI업데이트, 애니메이션, UI반응관련 어떤 것이든(사용자와 직접 상호작용하는 작업에 권장)     
+                (작업이 빨리 처리되지 않으면 상황이 멈춘 것처럼 보일만한 작업)
+
+                DispatchQueue.global(qos: .userInitiated) 몇초
+                유저가 즉시 필요하긴 하지만, 비동기적으로 처리된 작업 (ex. 앱 내에서 pdf파일 여는 것)
+
+                DispatchQueue.global() //디폴트
+                일반적인 작업
+
+                DispatchQueue.global(qos: .utility) 몇초에서 몇분
+                보통 Progress Indicator와 함께 길게 실행되는 작업, 계산, IO, Networking, 지속적인 데이터 feeds
+
+                DispatchQueue.global(qos: .background) 속도보다 에너지효율성 중시, 몇분 이상
+                유저가 직접적으로 인지하지 않고(시간이 안 중요한)작업, 데이터 미리 가져오기, 데이터베이스 유지
+
+                DispatchQueue.global(qos: .unspecified)
+                legacy API (스레드를 서비스 품질에서 제외시키는 )
+        3. 프라이빗 큐     
+            * 커스텀으로 만든다.
+            * 디폴트 설정은 Serial(직렬)이지만 Concurrent(동시)로도 설정 가능하다.
+            * QOS 설정이 가능하다.    
+                예시 코드
+                ``` swift 
+                let queue = DispatchQueue(label: "레이블 명")
+
+                queue.async {
+
+                }
+
+                let queue2 = DispatchQueue(label: "레이블 명", attributes: .concurrent)
+                //동시로도 설정 가능.
+                ```
+            * QOS설정을 안 해도 OS가 알아서 QOS를 판단해 설정한다.
+
+        
 
 참고 : https://inf.run/pQ7u

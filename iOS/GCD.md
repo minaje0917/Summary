@@ -115,6 +115,48 @@
                 //동시로도 설정 가능.
                 ```
             * QOS설정을 안 해도 OS가 알아서 QOS를 판단해 설정한다.
+    4. 반드시 메인큐에서 해야하는 작업    
+    * UI관련(화면) 일들은 __메인큐에서__ 처리해야한다.     
+    코드 예시
+        ```swift
+        DispatchQueue.global().async{
+            // 이미지 다운로드 등 관련 코드
+            코드 1
+            코드 2
+            코드 3
+            코드 4 
+
+            DispatchQueue.main.async{
+                // 다운로드한 이미지 표시 코드
+                self.imageView.image = image
+            }
+
+        }
+        ```
+    5. sync메서드에 대한 주의사항
+        1. 메인큐에서 다른큐로 보낼 때 sync메서드를 부르면 절대 안된다.
+            > 즉, UI와 관련되지 않은 오래걸리는 작업(네트워크)들은    
+            다른 쓰레드에서 일을 할 수 있도록 __async(비동기적)으로__ 실행하여야하며,    
+            동기적으로 시키면 UI가 멈춰서 유저에게 반응을 늦게 하고 버벅거린다.
+
+            ```swift 
+            DispatchQueue.global().sync {
+                // 현재 메인에서 일하고 있다면 절대절대 sync메서드를 쓰면 안된다.
+                // sync (X) async(O)
+            }
+            ```
+        2. 현재의 큐에서 현재의 큐로 "동기적으로" 보내서는 안된다.
+            > 현재의 큐를 블락하는 동시에 다시 현재의 큐에 접근하기 때문에     
+            <b>교착상태(DeadLock)</b>이 발생한다.
+            ```swift 
+            DispatchQueue.global().async {
+
+                DispatchQueue.global().sync{
+
+                }
+
+            }
+            ```
 
         
 

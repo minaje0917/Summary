@@ -9,8 +9,8 @@
 
 ## 3. Rxflow 용어
 <b>Flow</b> : 어플리케이션 내부의 navigation 공간을 의미       
-<b>Step</b> : 어플리케이션 내부의 navigation 상태를 의미
-<b>Stepper</b>  : Step을 생성할 수 있는 모든 것. Stepper는 Flow 내부의 모든 navigation 행동을 트리거할 수 있다.
+<b>Step</b> : 어플리케이션 내부의 navigation 상태를 의미.             
+<b>Stepper</b>  : Step을 생성할 수 있는 모든 것. Stepper는 Flow 내부의 모든 navigation 행동을 트리거할 수 있다.         
 <b>Presentable</b> : 표현할 수 있는 무언가를 추상화한 것. 예) UIViewController, Flow    
 <b>NextFlowItem</b> : 반응형 메커니즘에서 새로운 Step을 발생시킬 다음 무언가에 대해 Coordinator에 전달해 주는 역할
 

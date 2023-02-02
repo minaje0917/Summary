@@ -115,3 +115,5 @@ Observable.of("A", "B", "C")
 //completed
 ```
 여러가지 Observable객체들을 disposs할 수 있다.
+
+## Operators

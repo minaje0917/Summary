@@ -123,7 +123,7 @@ final class minaje {
     var A2: ExProtocol
 
     init (a1: A1, a2: A2) {
-        self.A1 = a
+        self.A1 = a1
         self.A2 = a2
     }
 }

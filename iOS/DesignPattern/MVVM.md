@@ -27,5 +27,5 @@ MVVM은 기본적으로 <b>M</b>odel, <b>V</b>iew, <b>V</b>iew<b>M</b>odel로 �
     3. ViewModel
         앱의 핵심적인 비지니스 로직을 담당한다.
         View 와 Model 사이를 이어주는 역할을 한다.
-
+MVVM의 단점 : 정형화 된 패턴이 없기 때문에 개발자 간에도 모두 스타일이 다르다.
 
